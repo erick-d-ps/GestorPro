@@ -2,8 +2,8 @@
 
 export default function Home() {
   return (
-    <div className="">
+    <main>
       <h1>Tetse</h1>
-    </div>
+    </main>
   );
 }
