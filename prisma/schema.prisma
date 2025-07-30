@@ -13,3 +13,95 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+//client
+model Custumer {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  phone      String
+  email      String
+  address    String?
+  created_at DateTime? @default(now())
+  Updated_at DateTime? @default(now())
+
+  //quando for cadastrar um cliente ele precisa pertencer ao usuario logado 
+  userId String? @db.ObjectId
+  User   User?   @relation(fields: [userId], references: [id])
+
+  tickts Ticket[]
+  //relacionando disendo que esse clienmte pode ter varios tickets atrelados
+}
+
+//referente ao chamado
+model Ticket {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  status      String
+  created_at  DateTime? @default(now())
+  Updated_at  DateTime? @default(now())
+
+  //quando for fazer o chamado receber o id do cliente
+  custumerId String?   @db.ObjectId
+  custumer   Custumer? @relation(fields: [custumerId], references: [id])
+  // passando o custumerid que é o id do client
+
+  //tambem temos que ter relação com o usuario
+  //ou seja 1 usuario pode ter varios tickets relacionados 
+  userid String? @db.ObjectId
+  User   User?   @relation(fields: [userid], references: [id])
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  tickets   Ticket[]
+  customers Custumer[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String   @id @default(auto()) @map("_id") @db.ObjectId
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
