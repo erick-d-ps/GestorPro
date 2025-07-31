@@ -52,6 +52,7 @@ model Ticket {
   User   User?   @relation(fields: [userid], references: [id])
 }
 
+//modelo de criação de conta 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
