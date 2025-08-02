@@ -38,7 +38,7 @@ export function Header() {
 
         {status === "authenticated" && (
           <div className="flex flex-row gap-4">
-            <Link href={"dashboard"}>
+            <Link href={"/dashboard"}>
               <FiUser size={26} color="#4b5563" />
             </Link>
             <button onClick={handleLogout}>
