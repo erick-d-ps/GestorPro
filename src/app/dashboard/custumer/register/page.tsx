@@ -25,7 +25,7 @@ export default async function RegisteCustumer() {
           <h1 className="text-3xl font-bold">Novo cliente</h1>
         </div>
        
-          <NewCustumerForm />
+          <NewCustumerForm userId={session.user.id} />
         
       </main>
     </Container>
