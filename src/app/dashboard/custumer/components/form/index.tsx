@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/input";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   name: z.string().min(1, "O campo nome é obrigatorio"),
@@ -25,7 +27,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export function NewCustumerForm() {
+export function NewCustumerForm({ userId }: { userId: string }) {
   const {
     register,
     handleSubmit,
@@ -34,12 +36,25 @@ export function NewCustumerForm() {
     resolver: zodResolver(schema),
   });
 
-  function handleRegisterCustumer(data: FormData){
-    console.log(data)
+  const router = useRouter();
+
+  async function handleRegisterCustumer(data: FormData) {
+    await api.post("/api/custumer", {
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      userId: userId,
+      address: data.address,
+    });
+
+    router.replace("/dashboard/custumer");
   }
 
   return (
-    <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegisterCustumer)}>
+    <form
+      className="flex flex-col mt-6"
+      onSubmit={handleSubmit(handleRegisterCustumer)}
+    >
       <label className="mb-1 text-lg font-bold">Nome completo</label>
       <Input
         type="text"
@@ -50,9 +65,7 @@ export function NewCustumerForm() {
       />
       <section className="flex flex-col sm:flex-row gap-4 my-2">
         <div className="flex-1">
-          <label className="mb-1 text-lg font-bold">
-           Telefone
-          </label>
+          <label className="mb-1 text-lg font-bold">Telefone</label>
           <Input
             type="text"
             name="phone"
@@ -62,9 +75,7 @@ export function NewCustumerForm() {
           />
         </div>
         <div className="flex-1">
-          <label className="mb-1 text-lg font-bold">
-           Email
-          </label>
+          <label className="mb-1 text-lg font-bold">Email</label>
           <Input
             type="text"
             name="email"
@@ -82,12 +93,12 @@ export function NewCustumerForm() {
         error={errors.address?.message}
         register={register}
       />
-       <button 
-       type="submit" 
-       className="bg-blue-500 my-4 px-2 h-11 text-white font-bold rounded "
-       >
+      <button
+        type="submit"
+        className="bg-blue-500 my-4 px-2 h-11 text-white font-bold rounded "
+      >
         Cadastrar
-       </button>
+      </button>
     </form>
   );
 }
