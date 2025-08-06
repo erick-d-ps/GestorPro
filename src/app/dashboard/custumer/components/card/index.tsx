@@ -1,6 +1,24 @@
+"use client"
+
 import { CustumerPrps } from "@/utils/custumer.type"
+import { api } from "@/lib/api"
 
 export function CardCustumer({custumer}: {custumer: CustumerPrps}){
+
+  async function handleDeletCustumer(){
+    try{
+      const response = await api.delete("/api/custumer", {
+        params:
+        {
+          id: custumer.id
+        }
+      })
+      console.log(response.data)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
     return(
       <article className="flex flex-col gap-2 p-2 bg-gray-100 border-1 border-gray-300 rounded-lg hover:scale-102 duration-300">
         <h2>
@@ -8,7 +26,10 @@ export function CardCustumer({custumer}: {custumer: CustumerPrps}){
         </h2>
         <p><a className="font-bold">Email: </a>{custumer.email}</p>
         <p><a className="font-bold">Telefone: </a>{custumer.phone}</p>
-        <button className="bg-red-500 px-4 rounded text-white mt-2 self-start mb-1 ">
+        <button 
+        className="bg-red-500 px-4 rounded text-white mt-2 self-start mb-1 "
+        onClick={handleDeletCustumer}
+        >
             Deletar
         </button>
       </article>  
