@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 const schema = z.object({
   name: z.string().min(1, "O campo nome é obrigatorio"),
-  email: z.email("Digite um email valigo").min(1, "O email é obrigatório."),
+  email: z.email("Digite um email valido").min(1, "O email é obrigatório."),
   phone: z.string().refine(
     (value) => {
       return (
