@@ -36,6 +36,11 @@ export default async function Custumer() {
               custumer={custumer}
             />
           ))}
+
+          {custumers.length === 0 && (
+            <h1 className="text-black font-medium">Você ainda não possui cliente cadastrado!</h1>
+          )}
+
         </section>
       </main>
     </Container>

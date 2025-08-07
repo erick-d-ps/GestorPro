@@ -2,8 +2,10 @@
 
 import { CustumerPrps } from "@/utils/custumer.type"
 import { api } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 export function CardCustumer({custumer}: {custumer: CustumerPrps}){
+  const router = useRouter();
 
   async function handleDeletCustumer(){
     try{
@@ -13,6 +15,7 @@ export function CardCustumer({custumer}: {custumer: CustumerPrps}){
           id: custumer.id
         }
       })
+      router.refresh();
       console.log(response.data)
     }catch(err){
       console.log(err)
