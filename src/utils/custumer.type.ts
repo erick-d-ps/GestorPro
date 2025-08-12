@@ -1,5 +1,5 @@
 
-export interface CustumerPrps {
+export interface CustumerProps {
   id: string;
   name: string;
   phone: string;
