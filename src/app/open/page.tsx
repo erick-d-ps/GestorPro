@@ -17,7 +17,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-interface CustumerDataInfo {
+export interface CustumerDataInfo {
   id: string;
   name: string;
 }
@@ -91,7 +91,7 @@ export default function openTickt() {
           </form>
         )}
 
-        {custumer !== null && <FormTicket />}
+        {custumer !== null && <FormTicket custumer={custumer}/>}
         
       </main>
     </div>
