@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FiSearch, FiX} from "react-icons/fi";
 import { FormTicket } from "./components/formTicket";
+import { api } from "@/lib/api";
 
 const schema = z.object({
   email: z
@@ -28,6 +29,7 @@ export default function openTickt() {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -36,6 +38,24 @@ export default function openTickt() {
   function handleClearCustumer(){
     setCustumer(null)
     setValue("email", "")
+  }
+
+  async function handleSearchCustumer(data: FormData){
+    const response = await api.get("/api/custumer", {
+      params: {
+        email: data.email
+      }
+    })
+
+    if(response.data === null){
+      setError("email", {type: "custom", message: "Ops cliente não foi encontrado!"})
+      return;
+    }
+
+    setCustumer({
+      id: response.data.id,
+      name: response.data.name
+    })
   }
 
   return (
@@ -51,7 +71,10 @@ export default function openTickt() {
             </button>
           </div>
         ) : (
-          <form className="bg-slate-100 py-6 px-2 rounded border-2 border-slate-300">
+          <form 
+            className="bg-slate-100 py-6 px-2 rounded border-2 border-slate-300"
+            onSubmit={handleSubmit(handleSearchCustumer)}
+          >
             <div className="flex flex-col gap-3">
               <Input
                 name="email"
@@ -60,7 +83,7 @@ export default function openTickt() {
                 error={errors.email?.message}
                 register={register}
               />
-              <button className="bg-blue-500 font-bold text-white flex flex-row gap-3 px-2 h-11 items-center justify-center rounded">
+              <button type="submit" className="bg-blue-500 font-bold text-white flex flex-row gap-3 px-2 h-11 items-center justify-center rounded">
                 Procurar cliente
                 <FiSearch size={24} color="#FFF" />
               </button>
