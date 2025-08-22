@@ -1,10 +1,10 @@
 "use client"
 
-import { CustumerPrps } from "@/utils/custumer.type"
+import { CustumerProps } from "@/utils/custumer.type"
 import { api } from "@/lib/api"
 import { useRouter } from "next/navigation"
 
-export function CardCustumer({custumer}: {custumer: CustumerPrps}){
+export function CardCustumer({custumer}: {custumer: CustumerProps}){
   const router = useRouter();
 
   async function handleDeletCustumer(){
