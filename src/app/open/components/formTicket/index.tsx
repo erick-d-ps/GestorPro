@@ -24,13 +24,14 @@ export function FormTicket({custumer}: FormTicketProps) {
   })
 
   async function handleRegisterTicket(data: FormData){
-    const response = await api.post("/api/ticket", {
+    await api.post("/api/ticket", {
       name: data.name,
       description: data.description,
       custumerId: custumer.id
     })
 
-    console.log(response.data)  
+    setValue("name", "");
+    setValue("description", "")
   }
     
 
