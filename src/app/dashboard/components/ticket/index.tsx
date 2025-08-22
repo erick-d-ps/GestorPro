@@ -7,7 +7,7 @@ import { FiCheckSquare, FiFile, FiLoader } from "react-icons/fi";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { ModalContext } from "@/providers/modal";
-import { useSession } from "next-auth/react";
+
 
 interface TicketItemProps {
   ticket: TicketProps;
@@ -15,7 +15,6 @@ interface TicketItemProps {
 }
 
 export function TicketItem({ custumer, ticket }: TicketItemProps) {
-  const { status, data } = useSession();
   const router = useRouter();
   const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
 
@@ -24,6 +23,7 @@ export function TicketItem({ custumer, ticket }: TicketItemProps) {
       await api.patch("/api/ticket", {
         id: ticket.id,
       });
+      alert("Chamdo Finalizado")
       router.refresh();
     } catch (err) {
       console.log(err);
@@ -36,6 +36,7 @@ export function TicketItem({ custumer, ticket }: TicketItemProps) {
       custumer: custumer,
       ticket: ticket,
     });
+
   }
 
   return (
@@ -51,16 +52,11 @@ export function TicketItem({ custumer, ticket }: TicketItemProps) {
           </span>
         </td>
         <td className="text-left">
-          {status === "authenticated" && (
+          
             <button className="mr-3" onClick={handleChangeStatus}>
               <FiCheckSquare size={24} color="#44ef44" />
             </button>
-          )}
-          {status === "loading" && (
-            <button className="animate-spin">
-              <FiLoader size={26} color="#4b5563" />
-            </button>
-          )}
+        
           <button onClick={handleOpenModal}>
             <FiFile size={24} color="#3b82f6" />
           </button>

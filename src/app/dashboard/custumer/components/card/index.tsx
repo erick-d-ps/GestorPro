@@ -15,6 +15,7 @@ export function CardCustumer({custumer}: {custumer: CustumerProps}){
           id: custumer.id
         }
       })
+      alert("Cliente deletado con sucesso"!)
       router.refresh();
       console.log(response.data)
     }catch(err: any){
