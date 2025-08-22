@@ -47,8 +47,9 @@ export async function DELETE(request: Request) {
     }
   })
 
-  if(findTickets){
-    return NextResponse.json({ error: "Failed delete custumer" }, { status: 400 });
+  if(findTickets?.status === "ABERTO"){
+    return NextResponse.json({ error: "Cliente possui chamado em aberto" }, { status: 400 });
+    
   }
 
   try {

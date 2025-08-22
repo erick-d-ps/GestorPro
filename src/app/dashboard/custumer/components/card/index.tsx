@@ -17,10 +17,16 @@ export function CardCustumer({custumer}: {custumer: CustumerProps}){
       })
       router.refresh();
       console.log(response.data)
-    }catch(err){
-      console.log(err)
+    }catch(err: any){
+      if(err.response && err.response.data && err.response.data.error){
+        console.log(err.response.data.error)
+      }else{
+        console.log("Erro ao deletar o cliente:", err)
+        alert("Ocorreu um erro ao tentar deletar.")
+      }
+       
     }
-  }
+  } 
 
     return(
       <article className="flex flex-col gap-2 p-2 bg-gray-100 border-1 border-gray-300 rounded-lg hover:scale-102 duration-300">
