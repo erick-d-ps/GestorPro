@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { api } from "@/lib/api";
 import { CustumerDataInfo } from "../../page"
+import toast from "react-hot-toast"
 
 const schema = z.object({
    name: z.string().min(1, "O nome do chamado é obrigatório"),
@@ -30,6 +31,7 @@ export function FormTicket({custumer}: FormTicketProps) {
       custumerId: custumer.id
     })
 
+    toast.success("cliente cadstrado com sucesso!")
     setValue("name", "");
     setValue("description", "")
   }
