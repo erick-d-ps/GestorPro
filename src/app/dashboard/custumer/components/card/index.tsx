@@ -3,6 +3,7 @@
 import { CustumerProps } from "@/utils/custumer.type"
 import { api } from "@/lib/api"
 import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 export function CardCustumer({custumer}: {custumer: CustumerProps}){
   const router = useRouter();
@@ -15,12 +16,13 @@ export function CardCustumer({custumer}: {custumer: CustumerProps}){
           id: custumer.id
         }
       })
-      alert("Cliente deletado con sucesso"!)
+      toast.success("Cliente deletado con sucesso"!)
       router.refresh();
       console.log(response.data)
     }catch(err: any){
       if(err.response && err.response.data && err.response.data.error){
         console.log(err.response.data.error)
+        toast.error(err.response.data.error)
       }else{
         console.log("Erro ao deletar o cliente:", err)
         alert("Ocorreu um erro ao tentar deletar.")

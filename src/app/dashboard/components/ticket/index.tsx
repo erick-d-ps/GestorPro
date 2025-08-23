@@ -3,10 +3,14 @@
 import { useContext } from "react";
 import { CustumerProps } from "@/utils/custumer.type";
 import { TicketProps } from "@/utils/ticket.type";
-import { FiCheckSquare, FiFile, FiLoader } from "react-icons/fi";
+import { FiCheckSquare, FiFile} from "react-icons/fi";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+
 import { ModalContext } from "@/providers/modal";
+import toast from "react-hot-toast";
+
+
 
 
 interface TicketItemProps {
@@ -19,14 +23,26 @@ export function TicketItem({ custumer, ticket }: TicketItemProps) {
   const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
 
   async function handleChangeStatus() {
+  
+    const promise = api.patch("/api/ticket", {
+      id: ticket.id,
+    });
+
+    toast.promise(
+      promise,
+      {
+        loading: 'Carregando...',
+        success: 'Status alterado com sucesso!',
+        error: 'Falha ao alterar o status.',
+      }
+    );
+
     try {
-      await api.patch("/api/ticket", {
-        id: ticket.id,
-      });
-      alert("Chamdo Finalizado")
+      await promise;
       router.refresh();
     } catch (err) {
       console.log(err);
+      
     }
   }
 

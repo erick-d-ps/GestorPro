@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/input";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   name: z.string().min(1, "O campo nome é obrigatorio"),
@@ -39,7 +40,7 @@ export function NewCustumerForm({ userId }: { userId: string }) {
   const router = useRouter();
 
   async function handleRegisterCustumer(data: FormData) {
-    await api.post("/api/custumer", {
+    const promise = api.post("/api/custumer", {
       name: data.name,
       phone: data.phone,
       email: data.email,
@@ -47,8 +48,18 @@ export function NewCustumerForm({ userId }: { userId: string }) {
       address: data.address,
     });
 
-    router.refresh()
-    router.replace("/dashboard/custumer");
+    toast.promise(promise, {
+      loading: "Carregando...",
+      success: "Cadastrado com sucesso!",
+      error: "Falha ao cadastrar um novo chamado!.",
+    });
+
+    try {
+      router.refresh();
+      router.replace("/dashboard/custumer");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

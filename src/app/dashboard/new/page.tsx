@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prismaClient from "@/lib/prisma";
+import { FormButton } from "../components/formButton";
+import { Suspense } from "react";
 
 export default async function NeWTicket() {
   const session = await getServerSession(authOptions);
@@ -17,30 +19,28 @@ export default async function NeWTicket() {
       userId: session.user.id,
     },
   });
-   
-  async function handleRegisteTicket(formData: FormData){
-    "use server"
+
+  async function handleRegisteTicket(formData: FormData) {
+    "use server";
 
     const name = formData.get("name");
     const description = formData.get("description");
     const custumerId = formData.get("custumer");
 
-   if(!name || !description || !custumerId){
-    return;
-   }
-
-   await prismaClient.ticket.create({
-    data: {
-      name: name as string,
-      description: description as string,
-      custumerId: custumerId as string,
-      status: "ABERTO",
-      userid : session?.user.id,
-
+    if (!name || !description || !custumerId) {
+      return;
     }
-   })
-   redirect("/dashboard")
 
+    await prismaClient.ticket.create({
+      data: {
+        name: name as string,
+        description: description as string,
+        custumerId: custumerId as string,
+        status: "ABERTO",
+        userid: session?.user.id,
+      },
+    });
+    redirect("/dashboard");
   }
 
   return (
@@ -81,9 +81,9 @@ export default async function NeWTicket() {
               <label className="mb-1 font-medium text-lg">
                 Selecione o cliente
               </label>
-              <select 
-              className="w-full border-2 border-gray-400 rounded-md px-2 mb-2 h-11"
-              name="custumer"
+              <select
+                className="w-full border-2 border-gray-400 rounded-md px-2 mb-2 h-11"
+                name="custumer"
               >
                 {custumers.map((custumer) => (
                   <option key={custumer.id} value={custumer.id}>
@@ -102,13 +102,18 @@ export default async function NeWTicket() {
             </Link>
           )}
 
-          <button
-            type="submit"
-            className="bg-blue-500 my-4 px-2 h-11 text-white font-bold rounded disabled:bg-slate-400 disabled:cursor-not-allowed"
-            disabled={custumers.length === 0}
+          <Suspense
+            fallback={
+              <button
+                disabled
+                className="bg-slate-400 my-4 px-2 h-11 text-white font-bold rounded"
+              >
+                Carregando...
+              </button>
+            }
           >
-            Cdastrar
-          </button>
+            <FormButton />
+          </Suspense>
         </form>
       </main>
     </Container>
