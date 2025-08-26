@@ -7,7 +7,7 @@
 ![tailwind css](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![mongodb](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
 
-**ESTOR PRO** é uma plataforma web criada com o objetivo de otimizar a gestão de chamados e clientes para empresas, proporcionando um sistema organizado e eficiente.
+**GESTOR PRO** é uma plataforma web criada com o objetivo de otimizar a gestão de chamados e clientes para empresas, proporcionando um sistema organizado e eficiente.
 
 Este projeto foi desenvolvido como parte de meus estudos em desenvolvimento web, aplicando conhecimentos práticos para criar uma solução funcional e robusta. 
 
